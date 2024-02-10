@@ -79,6 +79,7 @@ class GameScreen : Fragment(R.layout.screen_game) {
                 }
             }
 
+
             views[i].setOnClickListener { onClickListener.invoke(i) }
             views[i+1].setOnClickListener { onClickListener.invoke(i+1) }
         }
