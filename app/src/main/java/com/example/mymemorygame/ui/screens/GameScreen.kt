@@ -13,15 +13,23 @@ class GameScreen : Fragment(R.layout.screen_game) {
     private val x = 4
     private val y = 6
     private val views = ArrayList<ImageView>()
-    private var cardWith = 0f
+    private var draws = listOf<Int>()
+    private var cardWidth = 0f
     private var cardHeight = 0f
+    private var centerX = 0f
+    private var centerY = 0f
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.container.post {
-            cardWith = binding.container.width.toFloat() / x
+            cardWidth = binding.container.width.toFloat() / x
             cardHeight = binding.container.height.toFloat() / y
 
+            centerX = binding.container.width / 2f
+            centerY = binding.container.height / 2f
+
             addImages()
+            loadDraws()
+            clickEvent()
         }
     }
 
@@ -30,12 +38,92 @@ class GameScreen : Fragment(R.layout.screen_game) {
             for (j in 0 until y) {
                 val image = ImageView(requireContext())
 
-                image.setImageResource(R.drawable.image_back)
+                image.x = centerX - cardWidth / 2  // rasmni 1-pozitsiyasini centerga keltiri uchun
+                image.y = centerY - cardHeight / 2  // rasmni 1-pozitsiyasini centerga keltiri uchun
+
+                image.animate()
+                    .setDuration(1000)
+                    .x(i * cardWidth)       // rasmni x pozitsiyasi
+                    .y(j * cardHeight)      // rasmni y pozitsiyasi
+
+                image.setImageResource(R.drawable.image_back)   // image verish
+                binding.container.addView(image)                // parent classga qo'shish (UI chizish)
+
                 image.layoutParams.apply {
-                    width = cardWith.toInt()
-                    height = cardHeight.toInt()
+                    width = cardWidth.toInt()           // rasmni eni
+                    height = cardHeight.toInt()         // rasmni bo'yi
                 }
+
+                views.add(image)
             }
         }
+    }
+
+    private fun clickEvent() {
+        for (i in 0.. views.size-2 step 2) {
+            views[i].setOnClickListener {
+                views[i].animate()
+                    .setDuration(500)
+                    .rotationY(89f)
+                    .withEndAction {
+                        views[i].rotationY = -89f
+                        views[i].setImageResource(draws[i])
+
+                        views[i].animate()
+                            .setDuration(500)
+                            .rotationY(0f)
+                            .start()
+                    }
+                    .start()
+            }
+
+
+            views[i+1].setOnClickListener {
+                views[i+1].animate()
+                    .setDuration(500)
+                    .rotationY(89f)
+                    .withEndAction {
+                        views[i+1].rotationY = -89f
+                        views[i+1].setImageResource(draws[i+1])
+
+                        views[i+1].animate()
+                            .setDuration(1000)
+                            .rotationY(0f)
+                            .start()
+                    }
+                    .start()
+            }
+        }
+    }
+
+    private fun loadDraws() {
+        draws = listOf(
+            R.drawable.image_1,
+            R.drawable.image_2,
+            R.drawable.image_3,
+            R.drawable.image_4,
+            R.drawable.image_5,
+            R.drawable.image_6,
+            R.drawable.image_7,
+            R.drawable.image_8,
+            R.drawable.image_9,
+            R.drawable.image_10,
+            R.drawable.image_11,
+            R.drawable.image_12,
+//            R.drawable.image_13,
+//            R.drawable.image_14,
+//            R.drawable.image_15,
+//            R.drawable.image_16,
+//            R.drawable.image_17,
+//            R.drawable.image_18,
+//            R.drawable.image_19,
+//            R.drawable.image_20,
+//            R.drawable.image_21,
+//            R.drawable.image_22,
+//            R.drawable.image_23,
+//            R.drawable.image_24,
+        )
+
+        draws = draws.subList(0, draws.size) + draws.subList(0, draws.size).shuffled()
     }
 }
