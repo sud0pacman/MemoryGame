@@ -60,39 +60,27 @@ class GameScreen : Fragment(R.layout.screen_game) {
     }
 
     private fun clickEvent() {
-        for (i in 0.. views.size-2 step 2) {
-            views[i].setOnClickListener {
-                views[i].animate()
-                    .setDuration(500)
-                    .rotationY(89f)
-                    .withEndAction {
-                        views[i].rotationY = -89f
-                        views[i].setImageResource(draws[i])
+        for (i in 0 until views.size - 1 step 2) {
+            val onClickListener: (Int) -> Unit = {index ->
+                views[index].apply {
+                    this.animate()
+                        .setDuration(500)
+                        .rotationY(89f)
+                        .withEndAction {
+                            this.setImageResource(draws[index])
+                            this.rotationY = -89f
 
-                        views[i].animate()
-                            .setDuration(500)
-                            .rotationY(0f)
-                            .start()
-                    }
-                    .start()
+                            this.animate()
+                                .setDuration(500)
+                                .rotationY(0f)
+                                .start()
+                        }
+                        .start()
+                }
             }
 
-
-            views[i+1].setOnClickListener {
-                views[i+1].animate()
-                    .setDuration(500)
-                    .rotationY(89f)
-                    .withEndAction {
-                        views[i+1].rotationY = -89f
-                        views[i+1].setImageResource(draws[i+1])
-
-                        views[i+1].animate()
-                            .setDuration(1000)
-                            .rotationY(0f)
-                            .start()
-                    }
-                    .start()
-            }
+            views[i].setOnClickListener { onClickListener.invoke(i) }
+            views[i+1].setOnClickListener { onClickListener.invoke(i+1) }
         }
     }
 
