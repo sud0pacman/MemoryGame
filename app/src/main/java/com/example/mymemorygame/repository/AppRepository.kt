@@ -1,13 +1,10 @@
 package com.example.mymemorygame.repository
 
-class AppRepository private constructor() {
-    companion object {
-        private lateinit var instance: AppRepository
+import com.example.mymemorygame.data.model.CardData
+import com.example.mymemorygame.data.model.LevelEnum
+import kotlinx.coroutines.flow.Flow
 
-        fun getInstance(): AppRepository {
-            if (!(::instance.isInitialized))
-                instance = AppRepository()
-            return instance
-        }
-    }
+interface AppRepository {
+    fun checkOpens(openedImages: ArrayList<Int>) : Boolean
+    fun getImagesByLevel(level: LevelEnum): Flow<List<CardData>>
 }

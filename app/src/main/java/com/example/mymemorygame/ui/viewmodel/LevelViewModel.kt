@@ -1,5 +1,7 @@
 package com.example.mymemorygame.ui.viewmodel
 
-interface LevelViewModel {
+import com.example.mymemorygame.data.model.LevelEnum
 
+interface LevelViewModel {
+    fun selectLevel(level: LevelEnum)
 }

@@ -18,5 +18,9 @@
         android:id="@+id/gameScreen"
         android:name="com.example.mymemorygame.ui.screens.GameScreen"
         android:label="screen_game"
-        tools:layout="@layout/screen_game" />
+        tools:layout="@layout/screen_game" >
+        <argument
+            android:name="level"
+            app:argType="com.example.mymemorygame.data.model.LevelEnum" />
+    </fragment>
 </navigation>
